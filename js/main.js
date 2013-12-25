@@ -230,5 +230,5 @@ function SetUpSlide()
 function SizeElements()
 {
 	var slideWidth = jQuery("#slide").width();
-	jQuery("#slide").height(slideWidth*.25);
+	jQuery("#slide").height(slideWidth*.5);
 }
