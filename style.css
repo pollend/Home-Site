@@ -2,7 +2,7 @@
 Theme Name: Gray - Base Plate
 Theme URI: http://baseplatedesigns.com/?page-id=Home&post-id=2
 Description: A simplistic gray and orange theme built for business. fully responsive layout made to look great on any device. 
-Author: Base Plate
+Author: Project Resuma
 Author URI: http://www.baseplatedesigns.com/
 Version: 2.3.6
 License: GNU General Public License v2 or later0
@@ -81,7 +81,7 @@ cite{
 	font-weight: 700;
 }
 
-ul, ol { margin: 0 0 10px 20px; }
+ul, ol { margin:0 0 10px 50px; }
 
 
 
@@ -348,6 +348,11 @@ margin: 10px;
 	padding-top: 20px;
 }
 
+#title a
+{
+	text-decoration: none;
+}
+
 
 #title img{
 	width: 100%;
@@ -587,13 +592,16 @@ margin: 10px;
 #project-view>.project .project-container
 {
 	margin: 4px;
-	padding: 0px 5px;
+	padding: 0px 5px 5px 5px;
 	background: #B4B4B4;
 	box-shadow: 0px 0px 1px #B9B0FF;
 }
 .project-container>.title{
-	font-size: 15px;
-	margin-left: 15px;
+	font-size: 10px;
+}
+.scroll-image-container .image{
+	height: auto;
+	width: auto;
 }
 .projevt-image-view{
 	position: relative;
@@ -608,6 +616,7 @@ margin: 10px;
 	left: 0px;
 	background: rgba(0, 0, 0, 0.64);
 	color: #ADADAD;
+	z-index: 100;
 	font-size: 12px;
 }
 .projevt-image-view>.description div{
@@ -618,7 +627,10 @@ margin: 10px;
 #project-viewer{
 	background: red;
 }
-
+#slides
+{
+	margin: 0px;
+}
 #slide{
 	width: 100%;
 	position: relative;
@@ -646,7 +658,6 @@ margin: 10px;
 	position: absolute;
 	width: 100%;
 	height: 100%;
-	background: orange;
 	z-index: 1;
 	display: inline-block;
 }
@@ -868,7 +879,7 @@ a img.aligncenter {
 
 @media screen and (min-width:600px) {
 	.project-container>.title{
-		font-size: 15px;
+		font-size: 10px;
 	}
 	#menu-container{
 		overflow: visible;
@@ -942,7 +953,7 @@ a img.aligncenter {
 		width: 20%;
 	}
 		.project-container>.title{
-		font-size: 19px;
+		font-size: 12px;
 	}
 }
 @media screen and (min-width: 1080px) {
@@ -959,7 +970,7 @@ a img.aligncenter {
 		width: 16.6666%;
 	}
 	.project-container>.title{
-		font-size: 20px;
+		font-size: 13px;
 	}
 
 }

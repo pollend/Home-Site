@@ -6,7 +6,7 @@
 
 <?php get_header(); ?>
 	<div id="main" class="center-width">
-		<div>
+		<div id="blog-container">
 		<div id="contentContainer" class="full-width center-width" >
 		<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 

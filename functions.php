@@ -1,20 +1,5 @@
 <?php
 
-    //ouput header style and dump into page
-    function gray_header_style(){
-        ?>
-        <style type="text/css">
-
-
-            #title a{
-                color : #<?php echo get_theme_mod("header_textcolor") ; ?>;
-                text-decoration: none;
-            }
-        </style>
-
-        <?php
-
-    }
 
     //places a home link on the page
     function gray_menu_args( $args ) {
@@ -52,108 +37,7 @@
                 $control->print_tab_image( esc_url_raw( get_stylesheet_directory_uri() . '/' . $background ) );
     }
 
-    //setup the customizer
-    function gray_customizer($wp_customizer)
-    {
-        //full background image
-        $wp_customizer->add_section(
-            'gray_cover_background_image',
-            array(
-                'title' => 'cover background image',
-                'description' => 'full background image.',
-                'priority' => 35,
-            )
-        );
-
-        $wp_customizer->add_setting( 'gray_cover_background_image' ,  array( 'transport' => 'postMessage'));
-
-        $wp_customizer->add_control(
-        new WP_Customize_Image_Control(
-                $wp_customizer,
-                'gray_cover_background_image',
-                array(
-                    'label' => 'Image Upload',
-                    'section' => 'gray_cover_background_image',
-                    'settings' => 'gray_cover_background_image'
-                )
-            )
-        );
-
-        //background color and image
-        $wp_customizer->add_section(
-            'gray_pattern_background',
-            array(
-                'title' => 'Pattern Background',
-                'description' => 'background color and pattern.',
-                'priority' => 35,
-            )
-        );
-
-        $wp_customizer->add_setting('gray_pattern_repeat', array('transport' => 'postMessage') );
-         $wp_customizer->add_control(
-             new WP_Customize_Image_Control(
-                $wp_customizer,
-                'gray_pattern_repeat',
-                array(
-                    'label' => 'Image Upload',
-                    'section' => 'gray_pattern_background',
-                    'settings' => 'gray_pattern_repeat'
-                )
-            )
-        );
-
-        $control = $wp_customizer->get_control( 'gray_pattern_repeat' );
-
-        $control->add_tab( 'builtins', 'Built-ins',gray_background_customizer );
-
-
-        $wp_customizer->add_setting(
-        'gray_gradient_one',
-            array(
-                'default' => '#1958a0',
-                'transport' => 'postMessage'
-            )
-        );
-
-        $wp_customizer->add_control(new WP_Customize_Color_Control($wp_customizer, 'gray_gradient_one', array(
-            'section'    => 'gray_pattern_background',
-            'settings'   => 'gray_gradient_one',
-        )));
-
-        $wp_customizer->add_setting(
-        'gray_gradient_two',
-            array(
-                'default' => '#001a6b',
-                'transport' => 'postMessage'
-            )
-        );
-
-        $wp_customizer->add_control(new WP_Customize_Color_Control($wp_customizer, 'gray_gradient_two', array(
-        'section'    => 'gray_pattern_background',
-        'settings'   => 'gray_gradient_two',
-        )));
-
-         if ( $wp_customizer->is_preview() && ! is_admin() ) {
-            add_action( 'wp_footer', 'gray_customizer_preview', 21);
-        }
-
-        //send messages to post
-        $wp_customizer->get_setting( 'blogname' )->transport         = 'postMessage';
-        $wp_customizer->get_setting( 'blogdescription' )->transport  = 'postMessage';
-        $wp_customizer->get_setting( 'header_textcolor' )->transport = 'postMessage';
-    }
-    add_action( 'customize_register', 'gray_customizer' );
-    //create the varibles for the customizer preview
-    function gray_customizer_preview(){
-        ?>
-        <script type="text/javascript">
-            var color_one = "<?php echo  get_theme_mod('gray_gradient_one'); ?>";
-            var color_two= "<?php echo get_theme_mod('gray_gradient_two'); ?>";
-            var background_image= "<?php echo get_theme_mod('gray_pattern_repeat'); ?>" ;
-            var cover_background_image =  "<?php echo get_theme_mod('gray_cover_background_image'); ?>" ;
-        </script>
-        <?php
-    }
+   
 
     //customizer preview script
     function gray_customizer_live_preview()
@@ -217,7 +101,6 @@
 
         ));
 
-        add_theme_support( 'custom-header', array('wp-head-callback'  => 'gray_header_style'));
 
         register_sidebar(array(
             'name' => 'Sidebar Widgets',
@@ -252,6 +135,28 @@
         add_posts_page('gray project page', 'projects', 'read', 'project', 'gray_project_options_page');
     }
     add_action('admin_menu','gray_project_menu');
+
+    function gray_home_init($hook){
+        if($hook == "appearance_page_home"||$hook == "posts_page_project")
+        {
+            wp_enqueue_script('media-upload');
+            wp_enqueue_script('thickbox');
+            wp_enqueue_style('thickbox');
+        }
+
+        if($hook == "appearance_page_home")
+        {
+            wp_register_script('home-options', get_template_directory_uri() .'/admin/homeOptions.js', array('jquery','media-upload','thickbox'));
+            wp_enqueue_script('home-options');
+        }
+        if($hook == "posts_page_project")
+        {
+            wp_register_script('project-options', get_template_directory_uri() .'/admin/projectOptions.js', array('jquery','media-upload','thickbox'));
+            wp_enqueue_script('project-options');
+            wp_enqueue_style('project-page-style',get_template_directory_uri(). "/admin/projectOptions.css");
+        }
+    }
+     add_action('admin_enqueue_scripts', 'gray_home_init');
 
 
 

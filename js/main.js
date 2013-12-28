@@ -1,7 +1,3 @@
-var slides = new Array();
-var slideSelect = new Array();
-var currentPage = 1;
-
 var allVideos = 0;
 var contentAreaWidth;
 
@@ -44,17 +40,6 @@ function pageUpdate()
 
 jQuery(document).ready(function () {
 
-	jQuery("#project-view .project").each(function(){
-
-		jQuery(this).find(".projevt-image-view").on("mouseenter",function(){
-			jQuery(this).find(".description").transition({top:0},500);
-
-		});
-		jQuery(this).find(".projevt-image-view").on("mouseleave",function(){
-			jQuery(this).find(".description").transition({top:"100%"},500);
-		});
-	});
-
 	if (!jQuery.support.transition)
   		jQuery.fn.transition = jQuery.fn.animate;
 
@@ -79,20 +64,6 @@ jQuery(document).ready(function () {
 			});
 		}
 
-	});
-
-
-
-
-	SizeElements();
-	SetUpSlide();
-
-	jQuery("#slideLeft").on("click",function(){
-		SwitchToSlide(currentPage-1);
-	});
-
-	jQuery("#slideRight").on("click",function(){
-		SwitchToSlide(currentPage+1);
 	});
 
 	//on textarea resize, update the main area
@@ -143,7 +114,6 @@ jQuery(document).ready(function () {
 });
 
 jQuery(window).resize(jQuery.throttle(200,function () {
-	SizeElements();
 	pageUpdate();
 }));
 
@@ -160,75 +130,5 @@ jQuery(window).load(function(){
 	pageUpdate();
 });
 
-//SLIDE SHOW--------------------------------------------------------------------------------------
-function SwitchToSlide(index)
-{
-	var left= true;
-	if(!jQuery(slides[currentPage]).is(':animated'))
-	{
-		if(index != currentPage){
-			var oldPage = currentPage; 
-			if(index >= slides.length)
-			{
-				currentPage = 0;
-				left = false;
-			}
-			else if(index < 0)
-			{
-				currentPage = slides.length-1;
-				left = true;
-			}
-			else
-			{
-				currentPage = index;
-				if(currentPage > oldPage)
-					left = false;
-				else
-					left = true;
-			}
-
-			jQuery(slideSelect[currentPage]).css({"box-shadow":"0px 0px 0px black", background : "#444444"});
-			jQuery(slideSelect[oldPage]).css({background:"","box-shadow":""});
-
-			if(left)
-			{
-				jQuery(slides[currentPage]).css({"z-index":3,left:"200%"});
-				jQuery(slides[currentPage]).transition({left : "0%"},500,function()
-				{
-					jQuery(slides[currentPage]).css({"z-index":2});
-					jQuery(slides[oldPage]).css({"z-index":1});
-				});
-			}
-			else
-			{
-				jQuery(slides[currentPage]).css({"z-index":3,left:"-100%"});
-				jQuery(slides[currentPage]).transition({left : "0%"},500,function()
-				{
-					jQuery(slides[currentPage]).css({"z-index":2});
-					jQuery(slides[oldPage]).css({"z-index":1});
-				});
-			}
-		}
-	}
-}
 
 
-function SetUpSlide()
-{
-	jQuery("#slides li").each(function(element){
-		slides.push( "#"+this.id);
-		jQuery("#slideSelect").append("<li id=\"slideSelect"+element+"\"></li>");
-		slideSelect.push("#"+"slideSelect"+element);
-
-		jQuery("#slideSelect"+element).on("click",{index : element},function(event){
-			SwitchToSlide(event.data.index);
-		});
-	});
-	SwitchToSlide(0);
-}
-
-function SizeElements()
-{
-	var slideWidth = jQuery("#slide").width();
-	jQuery("#slide").height(slideWidth*.5);
-}

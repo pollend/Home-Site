@@ -1,16 +1,6 @@
 <?php 
 
-	add_action('admin_init', 'gray_project_init');
-    function gray_project_init(){
-    	register_setting( 'gray_project_options', 'gray_project_options');
-
-    	wp_enqueue_script('media-upload');
-		wp_enqueue_script('thickbox');
-		wp_register_script('project-options', get_template_directory_uri() .'/admin/projectOptions.js', array('jquery','media-upload','thickbox'));
-		wp_enqueue_script('project-options');
-		wp_enqueue_style('thickbox');
-		wp_enqueue_style('project-page-style',get_template_directory_uri(). "/admin/projectOptions.css");
-	}
+	register_setting( 'gray_project_options', 'gray_project_options');
 
 	function gray_project_options_page()
 	{
@@ -20,12 +10,6 @@
 	    }
 
 	    $options = get_option("gray_project_options");
-
-	    $projects = array( );
-	    foreach($options["projects"] as &$val) {
-		   array_push( $projects,$val);
-		}
-		//print_r($projects);
 
 		?>
 
@@ -39,7 +23,16 @@
 			<div id="project-container">
 
 
-			<?php for($x = 0; $x < count($projects); $x++): ?>
+			<?php 
+			print_r($options);
+			if( count($options["projects"])  > 0)
+			{
+		    $projects = array( );
+		    foreach($options["projects"] as &$val) {
+			   array_push( $projects,$val);
+			}
+
+			for($x = 0; $x < count($projects); $x++): ?>
 
 				<div class="projects" >
 					<a href="#" class="close">X</a>
@@ -54,14 +47,34 @@
 						<input type="text" name="gray_project_options[projects][<?php echo $x ; ?>][link]" value="<?php echo $projects[$x]["link"] ; ?>" />
 						<div>projects:</div>
 						<div class='upload'>
-							<input class="upload-text" type="text" size="36" name="gray_project_options[projects][<?php echo $x ; ?>][image]" value="<?php echo $projects[$x]["image"] ; ?>" />
-							<input class="upload-button" type="button" value="Upload Image" /></div>
+							<?php 
+							if(count($projects[$x]["image"]) > 0 )
+							{
+
+								$project_images = array();
+								foreach($projects[$x]["image"] as &$val) {
+								   array_push( $project_images,$val);
+								}
+
+								for($y = 0; $y < count($project_images);$y++):
+								 ?>
+
+									<div><input class="upload-text" type="text" size="36" name="gray_project_options[projects][<?php echo $x ; ?>][image][<?php echo $y ; ?>]" value="<?php echo $project_images[$y] ; ?>" /><input class="upload-button" type="button" value="Upload Image" /><input class="remove-button" type="button" value="Remove" /></div>
+								
+								<?php endfor;
+							}
+							?>
+
+						</div>
+						<a href="#" class="add-project">add project</a>
 						<div>description:</div>
 						<textarea name="gray_project_options[projects][<?php echo $x ; ?>][description]"><?php echo $projects[$x]["description"]; ?></textarea>
 					</div>
 				</div>
 	
-			<?php endfor; ?>
+			<?php endfor; 
+}
+			?>
 			</div>
 			<a href="#" id="add-project">add Project</a>
 			<?php submit_button(); ?>
