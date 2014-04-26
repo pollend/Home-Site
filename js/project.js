@@ -4,6 +4,11 @@ var containerHeight = 0;
 
 jQuery(document).ready(function () {
 
+
+	jQuery(this).find(".scroll-image-container .image").each(function(element)
+	{
+		jQuery(this).hide();
+	});
 });
 
 jQuery(window).resize(jQuery.throttle(200,function () {
@@ -13,9 +18,8 @@ jQuery(window).resize(jQuery.throttle(200,function () {
 
 jQuery(window).load(function(){
 	updateProject();
-setUpProjectView();
-pageUpdate();
-		
+	setUpProjectView();
+	pageUpdate();	
 });
 
 function updateProject()
@@ -34,6 +38,7 @@ function updateProject()
 	
 		jQuery(this).find(".scroll-image-container .image").each(function(element)
 		{
+			jQuery(this).show();
 			if(jQuery(this).width() > jQuery(this).height())
 			{
 				jQuery(this).css({width:"auto",height:"100%",position:"absolute"});

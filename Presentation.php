@@ -4,7 +4,9 @@
 				?>
 				<div id="slideContainer" >
 					<ul id="slides">
-						<?php foreach (get_option("gray_home_options")["Slide"] as &$val): ?>
+						<?php 
+						$slides = get_option("gray_home_options");
+						foreach ($slides["Slide"] as &$val): ?>
 
 							<?php if(!empty($themeOptions["isHTML".$x])): ?>
 								<li class="slide"> <?php echo  $val["image"] ?> </li>
@@ -31,8 +33,8 @@
 		<h3>Projects</h3>
 		<div class="project multi-view">
 		<?php 
-
-			foreach(get_option("gray_project_options")["projects"] as &$val):
+			$projects = get_option("gray_project_options");
+			foreach($projects["projects"] as &$val):
 		?>
 			<div>
 				<div class="project-container" >

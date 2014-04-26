@@ -2,6 +2,10 @@ var slides = new Array();
 var slideSelect = new Array();
 var currentPage = 1;
 
+(function(){
+
+})
+
 jQuery(document).ready(function () {
 	jQuery("#slideLeft").on("click",function(){
 		SwitchToSlide(currentPage-1);
@@ -26,9 +30,9 @@ jQuery(document).ready(function () {
 
 });
 
-jQuery(window).resize(jQuery.throttle(200,function () {
+jQuery(window).resize(function () {
 	updateSlides();
-}));
+});
 
 
 jQuery(window).load(function(){
